@@ -32,7 +32,6 @@ public class Lector {
     private String name;
 
     @Convert(converter = DegreeConverter.class)
-//    @Enumerated(EnumType.STRING)
     @Column(name = "degree")
     @NotNull
     private Degree degree;

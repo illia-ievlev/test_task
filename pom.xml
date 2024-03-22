@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ievlev</groupId>
-    <artifactId>test_task</artifactId>
+    <artifactId>test_task3</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>test_task</name>
+    <name>test_task3</name>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -93,6 +93,12 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
+            <version>1.18.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
             <version>1.18.1</version>
             <scope>test</scope>
         </dependency>

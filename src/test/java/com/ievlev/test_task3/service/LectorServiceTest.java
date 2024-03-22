@@ -70,7 +70,7 @@ public class LectorServiceTest {
         String template = "John";
         Lector lector1 = new Lector("John Doe", Degree.ASSISTANT, BigDecimal.valueOf(1000));
         Lector lector2 = new Lector("Jane Smith", Degree.PROFESSOR, BigDecimal.valueOf(2000));
-        when(lectorRepository.findByNameLike(template)).thenReturn(Arrays.asList(lector1, lector2));
+        when(lectorRepository.findByNameContainingIgnoreCase(template)).thenReturn(Arrays.asList(lector1, lector2));
         List<Lector> foundLectors = lectorService.globalSearchByNameTemplate(template);
         assertEquals(2, foundLectors.size());
         assertTrue(foundLectors.containsAll(Arrays.asList(lector1, lector2)));

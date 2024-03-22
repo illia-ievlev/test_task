@@ -8,7 +8,6 @@ import com.ievlev.test_task3.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -17,9 +16,7 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
 
     public String getNameOfHeadOfDepartment(String departmentName) {
-        if(departmentName == null){
-            throw new IllegalArgumentException("departmentName can't be null");
-        }
+        checkInputData(departmentName);
         Department department = departmentRepository.findDepartmentByName(departmentName).orElseThrow(() -> {
             throw new DepartmentWithSpecifiedNameNotFoundException("can't find department with name :" + departmentName);
         });
@@ -31,18 +28,24 @@ public class DepartmentService {
     }
 
     public Department getDepartmentByName(String departmentName) {
+        checkInputData(departmentName);
         return departmentRepository.findDepartmentByName(departmentName).orElseThrow(() -> {
             throw new DepartmentWithSpecifiedNameNotFoundException("can't find department with name :" + departmentName);
         });
     }
 
     public List<Lector> getLectorsFromDepartment(String departmentName) {
-        if (departmentName == null) {
-            throw new IllegalArgumentException("departmentName can't be null");
-        }
+        checkInputData(departmentName);
         Department department = getDepartmentByName(departmentName);
         return department.getLectorList();
     }
 
-
+    private void checkInputData(String departmentName) {
+        if (departmentName == null) {
+            throw new IllegalArgumentException("departmentName can't be null");
+        }
+        if (departmentName.isBlank()) {
+            throw new IllegalArgumentException("department name can't be empty");
+        }
+    }
 }

@@ -6,6 +6,7 @@ import com.ievlev.test_task3.model.Lector;
 import com.ievlev.test_task3.service.DepartmentService;
 import com.ievlev.test_task3.service.LectorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -23,26 +24,31 @@ public class InputProcessor implements CommandLineRunner {
     private final DepartmentService departmentService;
     private final Scanner scanner = new Scanner(System.in);
 
+    @Value("${run.loop}")
+    private boolean runLoop;
+
     @Override
     public void run(String... args) throws Exception {
-        while (true) {
+        while (runLoop) {
             System.out.println("User Input: ");
             String input = scanner.nextLine();
             if (input.equals("exit")) {
                 break;
             }
-            try{
+            try {
                 System.out.println("Answer: " + processInputString(input));
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
         scanner.close();
-        System.exit(12);
+        System.out.println("exited");
     }
 
     private String processInputString(String input) {
+        if (input == null) {
+            throw new IllegalArgumentException("input can't be null");
+        }
         if (input.contains("Who is head of department ")) {
             String regex = "Who is head of department (.*)";
             String departmentName = getUserInputArgument(regex, input);
