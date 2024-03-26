@@ -1,7 +1,7 @@
 package com.ievlev.test_task3.model;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -16,6 +16,17 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "departments")
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "Department.lectorList",
+                attributeNodes = {
+                        @NamedAttributeNode("lectorList")
+                }
+        ),
+        @NamedEntityGraph(name = "Department.headOfDepartment",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "headOfDepartment")
+                })
+})
 public class Department {
 
     @Id
@@ -32,7 +43,7 @@ public class Department {
     @OneToOne
     private Lector headOfDepartment;
 
-    @ManyToMany (fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "department_lector",
             joinColumns = @JoinColumn(name = "department_id"),
             inverseJoinColumns = @JoinColumn(name = "lector_id"))

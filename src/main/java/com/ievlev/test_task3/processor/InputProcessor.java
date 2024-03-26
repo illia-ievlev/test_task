@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,24 +60,8 @@ public class InputProcessor implements CommandLineRunner {
         if (input.contains("Show ") && input.contains(" statistics")) {
             String regex = "Show (.*) statistics";
             String departmentName = getUserInputArgument(regex, input);
-            List<Lector> lectorList = departmentService.getLectorsFromDepartment(departmentName);
-            long numberOfAssistants = 0;
-            long numberOfAssociateProfessors = 0;
-            long numberOfProfessors = 0;
-
-            for (Lector lector : lectorList) {
-                if (lector.getDegree().equals(Degree.ASSISTANT)) {
-                    numberOfAssistants++;
-                }
-                if (lector.getDegree().equals(Degree.PROFESSOR)) {
-                    numberOfProfessors++;
-                }
-                if (lector.getDegree().equals(Degree.ASSOCIATE_PROFESSOR)) {
-                    numberOfAssociateProfessors++;
-                }
-            }
-
-            return "assistants - " + numberOfAssistants + "\n associate professors - " + numberOfAssociateProfessors + "\n professors - " + numberOfProfessors;
+            Map<String, Long> statisticsMap = departmentService.getDepartmentStatistics(departmentName);
+            return "assistants - " + statisticsMap.get("assistants") + "\n associate professors - " + statisticsMap.get("associate professors") + "\n professors - " + statisticsMap.get("professors");
         }
 
         if (input.contains("Show the average salary for the department ")) {

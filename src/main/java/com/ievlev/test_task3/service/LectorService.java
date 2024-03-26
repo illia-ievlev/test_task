@@ -3,6 +3,7 @@ package com.ievlev.test_task3.service;
 import com.ievlev.test_task3.model.Department;
 import com.ievlev.test_task3.model.Lector;
 import com.ievlev.test_task3.repository.LectorRepository;
+import com.ievlev.test_task3.util.CheckInputUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,9 @@ public class LectorService {
     private final DepartmentService departmentService;
 
     public BigDecimal getAverageSalaryOfDepartment(String departmentName) {
-        checkInputData(departmentName);
-        Department department = departmentService.getDepartmentByName(departmentName);
+        CheckInputUtil.checkInputData(departmentName);
+
+        Department department = departmentService.getDepartmentWithLectorByName(departmentName);
         List<Lector> lectorList = department.getLectorList();
         BigDecimal totalSalary = lectorList.stream()
                 .map(Lector::getSalary)
@@ -26,8 +28,9 @@ public class LectorService {
     }
 
     public long getNumberOfEmployeeForDepartment(String departmentName) {
-        checkInputData(departmentName);
-        Department department = departmentService.getDepartmentByName(departmentName);
+        CheckInputUtil.checkInputData(departmentName);
+
+        Department department = departmentService.getDepartmentWithLectorByName(departmentName);
         return department.getLectorList().size();
     }
 
@@ -38,12 +41,5 @@ public class LectorService {
         return lectorRepository.findByNameContainingIgnoreCase(template);
     }
 
-    private void checkInputData(String departmentName) {
-        if (departmentName == null) {
-            throw new IllegalArgumentException("departmentName can't be null");
-        }
-        if (departmentName.isBlank()) {
-            throw new IllegalArgumentException("department name can't be empty");
-        }
-    }
+
 }
